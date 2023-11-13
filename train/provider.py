@@ -17,6 +17,7 @@ from box_util import box3d_iou
 from model_util import g_type2class, g_class2type, g_type2onehotclass
 from model_util import g_type_mean_size
 from model_util import NUM_HEADING_BIN, NUM_SIZE_CLUSTER
+import yaml
 
 try:
     raw_input          # Python 2
@@ -121,8 +122,11 @@ class FrustumDataset(object):
         self.rotate_to_center = rotate_to_center
         self.one_hot = one_hot
         if overwritten_data_path is None:
-            overwritten_data_path = os.path.join(ROOT_DIR,
-                'kitti/frustum_carpedcyc_%s.pickle'%(split))
+            # overwritten_data_path = os.path.join(ROOT_DIR,
+            #     'kitti/frustum_carpedcyc_%s.pickle'%(split))
+            with open('config/config.yaml') as f:
+                data = yaml.safe_load(f)
+            overwritten_data_path = os.path.join(data['kitti_data'], 'frustum_carpedcyc_%s.pickle'%(split))
 
         self.from_rgb_detection = from_rgb_detection
         if from_rgb_detection:

@@ -18,7 +18,10 @@ import kitti_util as utils
 import cPickle as pickle
 from kitti_object import *
 import argparse
+import yaml
 
+with open('config/config.yaml') as f:
+    data = yaml.safe_load(f)
 
 def in_hull(p, hull):
     from scipy.spatial import Delaunay
@@ -44,7 +47,8 @@ def extract_pc_in_box2d(pc, box2d):
 def demo():
     import mayavi.mlab as mlab
     from viz_util import draw_lidar, draw_lidar_simple, draw_gt_boxes3d
-    dataset = kitti_object(os.path.join(ROOT_DIR, 'dataset/KITTI/object'))
+    # dataset = kitti_object(os.path.join(ROOT_DIR, 'dataset/KITTI/object'))
+    dataset = kitti_object(data["kitti_data"])
     data_idx = 0
 
     # Load data from dataset
@@ -163,7 +167,8 @@ def extract_frustum_data(idx_filename, split, output_filename, viz=False,
     Output:
         None (will write a .pickle file to the disk)
     '''
-    dataset = kitti_object(os.path.join(ROOT_DIR,'dataset/KITTI/object'), split)
+    # dataset = kitti_object(os.path.join(ROOT_DIR,'dataset/KITTI/object'), split)
+    dataset = kitti_object(data["kitti_data"], split)
     data_idx_list = [int(line.rstrip()) for line in open(idx_filename)]
 
     id_list = [] # int number
@@ -279,7 +284,8 @@ def extract_frustum_data(idx_filename, split, output_filename, viz=False,
 
 def get_box3d_dim_statistics(idx_filename):
     ''' Collect and dump 3D bounding box statistics '''
-    dataset = kitti_object(os.path.join(ROOT_DIR,'dataset/KITTI/object'))
+    # dataset = kitti_object(os.path.join(ROOT_DIR,'dataset/KITTI/object'))
+    dataset = kitti_object(data["kitti_data"])
     dimension_list = []
     type_list = []
     ry_list = []
@@ -336,7 +342,8 @@ def extract_frustum_data_rgb_detection(det_filename, split, output_filename,
     Output:
         None (will write a .pickle file to the disk)
     '''
-    dataset = kitti_object(os.path.join(ROOT_DIR, 'dataset/KITTI/object'), split)
+    # dataset = kitti_object(os.path.join(ROOT_DIR, 'dataset/KITTI/object'), split)
+    dataset = kitti_object(data["kitti_data"], split)
     det_id_list, det_type_list, det_box2d_list, det_prob_list = \
         read_det_file(det_filename)
     cache_id = -1
@@ -436,7 +443,8 @@ def write_2d_rgb_detection(det_filename, split, result_dir):
     Usage:
         write_2d_rgb_detection("val_det.txt", "training", "results")
     '''
-    dataset = kitti_object(os.path.join(ROOT_DIR, 'dataset/KITTI/object'), split)
+    # dataset = kitti_object(os.path.join(ROOT_DIR, 'dataset/KITTI/object'), split)
+    dataset = kitti_object(data["kitti_data"], split)
     det_id_list, det_type_list, det_box2d_list, det_prob_list = \
         read_det_file(det_filename)
     # map from idx to list of strings, each string is a line without \n

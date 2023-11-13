@@ -14,6 +14,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIR = os.path.dirname(BASE_DIR)
 sys.path.append(os.path.join(ROOT_DIR, 'mayavi'))
 import kitti_util as utils
+import yaml
 
 try:
     raw_input          # Python 2
@@ -200,7 +201,10 @@ def show_lidar_on_image(pc_velo, img, calib, img_width, img_height):
     return img
 
 def dataset_viz():
-    dataset = kitti_object(os.path.join(ROOT_DIR, 'dataset/KITTI/object'))
+    with open('config/config.yaml') as f:
+        data = yaml.safe_load(f)
+    # dataset = kitti_object(os.path.join(ROOT_DIR, 'dataset/KITTI/object'))
+    dataset = kitti_object(data["kitti_data"])
 
     for data_idx in range(len(dataset)):
         # Load data from dataset
