@@ -1,6 +1,6 @@
 ''' Cluster and visualize distribution of box3d '''
 
-import cPickle as pickle
+import _pickle as pickle
 with open('box3d_dimensions.pickle','rb') as fp:
     type_list = pickle.load(fp)
     dimension_list = pickle.load(fp) # l,w,h
